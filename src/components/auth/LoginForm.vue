@@ -7,7 +7,7 @@
       <input
         id="email"
         type="email"
-        v-model="email"
+        v-model="form.email"
         required
         autocomplete="username"
         placeholder="Enter your email"
@@ -19,7 +19,7 @@
       <input
         id="password"
         type="password"
-        v-model="password"
+        v-model="form.password"
         required
         autocomplete="current-password"
         placeholder="Enter your password"
@@ -32,39 +32,46 @@
   </form>
 </template>
 
-<script>
-export default {
-  name: 'LoginForm',
-  data() {
-    return {
-      email: '',
-      password: '',
-      errorMessage: '',
-      isSubmitting: false,
-    }
-  },
-  methods: {
-    submitLogin() {
-      this.errorMessage = ''
+<script setup>
+import { ref, reactive } from 'vue'
+import axios from 'axios'
 
-      if (!this.email || !this.password) {
-        this.errorMessage = 'Email and password are required.'
-        return
+const API_PORT = 5072
+const api = axios.create({ baseURL: `http://localhost:${API_PORT}` })
+
+const form = reactive({
+  email: '',
+  password: '',
+})
+
+const errorMessage = ref('')
+const isSubmitting = ref(false)
+
+function submitLogin() {
+  errorMessage.value = ''
+  isSubmitting.value = true
+
+  api
+    .post('/api/user/signin', {
+      email: form.email,
+      password: form.password,
+    })
+    .then((response) => {
+      console.log('Login successful:', response.data)
+      //const { token } = response.data;
+      //localStorage.setItem('authToken', token);
+      // Optionally, redirect to a protected page or emit an event
+    })
+    .catch((error) => {
+      if (error.response && error.response.data && error.response.data.message) {
+        errorMessage.value = error.response.data.message
+      } else {
+        errorMessage.value = 'An error occurred during login.'
       }
-
-      this.isSubmitting = true
-      const payload = {
-        email: this.email.trim(),
-        password: this.password,
-      }
-
-      this.$emit('login', payload)
-
-      setTimeout(() => {
-        this.isSubmitting = false
-      }, 300)
-    },
-  },
+    })
+    .finally(() => {
+      isSubmitting.value = false
+    })
 }
 </script>
 
