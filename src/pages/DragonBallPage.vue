@@ -1,6 +1,8 @@
 <template>
-  <q-page class="q-pa-md">
-    <h3>Dragon Ball Characters</h3>
+  <q-page class="q-pa-lg dragonball-page">
+    <h2 class="title-dragonball text-center q-mb-xl">
+        Dragon Ball Explorer
+    </h2>
 
     <SearchBar @search="handleSearch" />
 
@@ -31,7 +33,7 @@ const filteredCharacters = computed(() => {
 async function loadCharacters() {
   try {
     const response = await axios.get(
-      'https://dragonball-api.com/api/characters?page=1&limit=20'
+      'https://dragonball-api.com/api/characters?page=1&limit=100'
     )
 
     characters.value = response.data.items
@@ -44,3 +46,21 @@ onMounted(() => {
   loadCharacters()
 })
 </script>
+
+<style scoped>
+.dragonball-page {
+  min-height: 100vh;
+  background: linear-gradient(
+    180deg,
+    #fff3e0 0%,
+    #e3f2fd 100%
+  );
+}
+
+.title-dragonball {
+  color: #ff6f00;
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+</style>

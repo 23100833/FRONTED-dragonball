@@ -1,5 +1,5 @@
 <template>
-  <div class="row q-col-gutter-md">
+  <div class="row justify-center q-col-gutter-lg">
     <div
       v-for="character in characters"
       :key="character.id"

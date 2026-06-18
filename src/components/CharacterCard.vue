@@ -1,5 +1,5 @@
 <template>
-  <q-card class="my-card">
+  <q-card class="my-card bg-blue-1">
     <q-img
       :src="character.image"
       :alt="character.name"
@@ -46,6 +46,12 @@ defineProps({
 
 <style scoped>
 .my-card {
-  width: 250px;
+  width: 320px;
+  border-radius: 20px;
+  transition: transform 0.3s;
+}
+
+.my-card:hover {
+  transform: scale(1.03);
 }
 </style>
